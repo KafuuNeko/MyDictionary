@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.smallcake.mydictionary.R;
 import com.smallcake.mydictionary.adapter.ListViewWordsAdapter;
@@ -29,9 +30,10 @@ import static com.smallcake.mydictionary.mvp.model.ReadWordsType.ALL_WORDS;
 public class FragmentAllWords extends Fragment implements IWordsView {
     private View mRootView = null;
     private ListView mLvAllWords;
+    private TextView tvAllWordsTips;
     private BWordsLoad mBroadcast;
-
     private IWordsPresenter mWordsPresenter;
+    private int mWordsNumber = 0;
 
     @Nullable
     @Override
@@ -48,7 +50,8 @@ public class FragmentAllWords extends Fragment implements IWordsView {
         mWordsPresenter = new WordsPresenterV1(getContext(),this, ALL_WORDS);
 
         //查找组件
-        mLvAllWords = mRootView.findViewById(R.id.lvAllWords);
+        mLvAllWords = mRootView.findViewById(R.id.fragment_all_words_lv_all_words);
+        tvAllWordsTips = mRootView.findViewById(R.id.fragment_all_words_tv_all_words_tips);
 
         //注册列表更新广播，以便接收更新列表请求
         String action = "load.all_words";
@@ -76,8 +79,19 @@ public class FragmentAllWords extends Fragment implements IWordsView {
 
     @Override
     public void onWordsLoadComplete(List<Words> words) {
+        mWordsNumber = words.size();
         mLvAllWords.setAdapter(new ListViewWordsAdapter(getContext(), words));
         mLvAllWords.setOnItemClickListener(new WordsListItemClickListener(getContext(), words));
+
+        if (mWordsNumber == 0) {
+            tvAllWordsTips.setText("没有任何单词");
+            tvAllWordsTips.setVisibility(View.VISIBLE);
+        }else{
+            tvAllWordsTips.setVisibility(View.GONE);
+        }
+
         System.gc();
     }
+
+
 }

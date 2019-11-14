@@ -41,8 +41,8 @@ public class WordsListItemClickListener implements AdapterView.OnItemClickListen
 
         android.support.v7.app.AlertDialog dialog = new android.support.v7.app.AlertDialog.Builder(mContext)
                 .setView(DialogView)
-                .setTitle("编辑")
-                .setPositiveButton("修改", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.tr_edit)
+                .setPositiveButton(R.string.tr_modify, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -55,7 +55,7 @@ public class WordsListItemClickListener implements AdapterView.OnItemClickListen
                     }
                 })
 
-                .setNegativeButton("取消",null)
+                .setNegativeButton(R.string.tr_cancel,null)
                 .create();
 
         dialog.show();
@@ -65,9 +65,15 @@ public class WordsListItemClickListener implements AdapterView.OnItemClickListen
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final Words words = mWords.get(position);
 
-        String[] items = new String[]{"熟悉","生词","编辑","删除","取消"};
+        String[] items = new String[]{
+                mContext.getString(R.string.tr_new_word),
+                mContext.getString(R.string.tr_familiar_word),
+                mContext.getString(R.string.tr_edit),
+                mContext.getString(R.string.tr_delete),
+                mContext.getString(R.string.tr_cancel)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

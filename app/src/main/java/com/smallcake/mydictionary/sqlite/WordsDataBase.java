@@ -27,6 +27,8 @@ public class WordsDataBase extends SQLiteOpenHelper {
     }
 
     public WordsDataBase addWord(Words words){
+        Log.d("addWord","add words = " + words.getWords() + ",describe = "+words.getDescribe() + "  Describe = " +words.getDescribe());
+
         String[] path = new String[2];
 
         path[0] = words.getWords();

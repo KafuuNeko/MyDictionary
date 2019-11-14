@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.smallcake.mydictionary.R;
 import com.smallcake.mydictionary.adapter.ListViewWordsAdapter;
@@ -30,6 +31,8 @@ public class FragmentFamiliarWords extends Fragment implements IWordsView {
     private View mRootView = null;
     private BWordsLoad mBroadcast;
     private ListView mLvFamiliarWords;
+    private TextView tvFamiliarWordsTips;
+    private int mWordsNumber = 0;
 
     private IWordsPresenter mWordsPresenter;
 
@@ -48,7 +51,8 @@ public class FragmentFamiliarWords extends Fragment implements IWordsView {
         mWordsPresenter = new WordsPresenterV1(getContext(),this, Familiar_Words);
 
         //查找组件
-        mLvFamiliarWords = mRootView.findViewById(R.id.lvFamiliarWords);
+        mLvFamiliarWords = mRootView.findViewById(R.id.fragment_familiar_words_lv_familiar_words);
+        tvFamiliarWordsTips = mRootView.findViewById(R.id.fragment_familiar_words_tv_familiar_words_tips);
 
         //注册列表更新广播，以便接收更新列表请求
         String action = "load.familiar_words";
@@ -74,9 +78,19 @@ public class FragmentFamiliarWords extends Fragment implements IWordsView {
 
     @Override
     public void onWordsLoadComplete(List<Words> words) {
+        mWordsNumber = words.size();
         mLvFamiliarWords.setAdapter(new ListViewWordsAdapter(getContext(), words));
         mLvFamiliarWords.setOnItemClickListener(new WordsListItemClickListener(getContext(), words));
+
+        if (mWordsNumber == 0) {
+            tvFamiliarWordsTips.setText("没有熟悉的单词");
+            tvFamiliarWordsTips.setVisibility(View.VISIBLE);
+        }else{
+            tvFamiliarWordsTips.setVisibility(View.GONE);
+        }
+
         System.gc();
     }
+
 
 }

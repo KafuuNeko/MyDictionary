@@ -43,7 +43,7 @@ public class ListViewWordsAdapter extends BaseAdapter {
 
         ((TextView) view.findViewById(R.id.listview_item_words_word)).setText(words.getWords());
         ((TextView) view.findViewById(R.id.listview_item_words_describe)).setText(words.getDescribe());
-        ((TextView) view.findViewById(R.id.listview_item_words_status)).setText((words.familiar?"熟悉":"生词"));
+        ((TextView) view.findViewById(R.id.listview_item_words_status)).setText((words.familiar?R.string.tr_familiar_word:R.string.tr_new_word));
 
         return view;
     }

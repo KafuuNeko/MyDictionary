@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.smallcake.mydictionary.R;
 import com.smallcake.mydictionary.adapter.ListViewWordsAdapter;
@@ -29,9 +30,11 @@ import static com.smallcake.mydictionary.mvp.model.ReadWordsType.New_Words;
 public class FragmentNewWords extends Fragment implements IWordsView {
     private View mRootView = null;
     private ListView mLvNewWords;
+    private TextView tvNewWordsTips;
+    private BWordsLoad mBroadcast;
+    private int mWordsNumber;
 
     private IWordsPresenter mWordsPresenter;
-    private BWordsLoad mBroadcast;
 
     @Nullable
     @Override
@@ -44,9 +47,10 @@ public class FragmentNewWords extends Fragment implements IWordsView {
             mRootView = inflater.inflate(R.layout.fragment_new_words, null);
         }
 
-        mWordsPresenter  = new WordsPresenterV1(getContext(),this, New_Words);
+        mWordsPresenter = new WordsPresenterV1(getContext(),this, New_Words);
 
-        mLvNewWords = mRootView.findViewById(R.id.lvNewWords);
+        mLvNewWords = mRootView.findViewById(R.id.fragment_new_words_lv_new_words);
+        tvNewWordsTips = mRootView.findViewById(R.id.fragment_new_words_tv_new_words_tips);
 
         //注册列表更新广播，以便接收更新列表请求
         String action = "load.new_words";
@@ -72,8 +76,19 @@ public class FragmentNewWords extends Fragment implements IWordsView {
 
     @Override
     public void onWordsLoadComplete(List<Words> words) {
+        mWordsNumber = words.size();
         mLvNewWords.setAdapter(new ListViewWordsAdapter(getContext(), words));
         mLvNewWords.setOnItemClickListener(new WordsListItemClickListener(getContext(), words));
+
+        if (mWordsNumber == 0) {
+            tvNewWordsTips.setText("没有新单词");
+            tvNewWordsTips.setVisibility(View.VISIBLE);
+        }else{
+            tvNewWordsTips.setVisibility(View.GONE);
+        }
+
         System.gc();
     }
+
+
 }

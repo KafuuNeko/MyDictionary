@@ -102,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(DialogView)
-                .setTitle("添加")
-                .setPositiveButton("添加", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.tr_add)
+                .setPositiveButton(R.string.tr_add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
 
-                .setNegativeButton("取消",null)
+                .setNegativeButton(R.string.tr_cancel,null)
                 .create();
 
         dialog.show();
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
      * */
     public void onAboutSoftware(View v){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Version:1.0\nAuthor:短毛猫\nE-mail:66492422@qq.com");
+        builder.setMessage(R.string.text_about);
         builder.create().show();
     }
 

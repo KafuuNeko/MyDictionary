@@ -10,6 +10,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:background="@color/colorPrimaryDark"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,13 +21,13 @@
             android:id="@+id/mTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onAboutSoftware"
             android:text="@string/main_menu_new_words"
             android:textAllCaps="false"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="#03A9F4"
+            android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:onClick="onAboutSoftware"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +67,7 @@
     <LinearLayout
         android:id="@+id/mMenu"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:baselineAligned="false"
@@ -81,15 +82,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:onClick="onMenuButtonNewWords"
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="#00FFFFFF"
                 android:contentDescription="@string/description"
-                android:scaleType="centerInside"
                 android:onClick="onMenuButtonNewWords"
+                android:scaleType="centerInside"
                 android:src="@drawable/ic_unfinished" />
 
             <TextView
@@ -105,11 +107,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:onClick="onMenuButtonMediumTerm"
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="#00FFFFFF"
                 android:contentDescription="@string/description"
                 android:scaleType="centerInside"
@@ -128,11 +131,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:onClick="onMenuButtonAll"
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="#00FFFFFF"
                 android:contentDescription="@string/description"
                 android:scaleType="centerInside"
