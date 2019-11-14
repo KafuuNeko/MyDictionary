@@ -125,6 +125,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
+     * 关于软件
+     * onAboutSoftware
+     * */
+    public void onAboutSoftware(View v){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Version:1.0\nAuthor:短毛猫\nE-mail:66492422@qq.com");
+        builder.create().show();
+    }
+
+    /*
     * 底部导航点击事件
     * onMenuButtonNewWords
     * */
