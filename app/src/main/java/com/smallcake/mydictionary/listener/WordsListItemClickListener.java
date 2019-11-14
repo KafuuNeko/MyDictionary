@@ -66,8 +66,8 @@ public class WordsListItemClickListener implements AdapterView.OnItemClickListen
         final Words words = mWords.get(position);
 
         String[] items = new String[]{
-                mContext.getString(R.string.tr_new_word),
                 mContext.getString(R.string.tr_familiar_word),
+                mContext.getString(R.string.tr_new_word),
                 mContext.getString(R.string.tr_edit),
                 mContext.getString(R.string.tr_delete),
                 mContext.getString(R.string.tr_cancel)};
