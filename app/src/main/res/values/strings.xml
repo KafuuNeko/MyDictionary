@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">我的词库</string>
+    <string name="description">ImageButton</string>
+    <string name="main_menu_new_words">新词</string>
+    <string name="main_menu_familiar_words">熟词</string>
+    <string name="main_menu_all">词库</string>
+    <string name="tr_word">单词</string>
+    <string name="tr_describe">描述</string>
+</resources>
