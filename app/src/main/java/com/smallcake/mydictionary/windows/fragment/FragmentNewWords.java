@@ -32,9 +32,6 @@ public class FragmentNewWords extends Fragment implements IWordsView {
     private ListView mLvNewWords;
     private TextView tvNewWordsTips;
     private BWordsLoad mBroadcast;
-    private int mWordsNumber;
-
-    private IWordsPresenter mWordsPresenter;
 
     @Nullable
     @Override
@@ -47,14 +44,14 @@ public class FragmentNewWords extends Fragment implements IWordsView {
             mRootView = inflater.inflate(R.layout.fragment_new_words, null);
         }
 
-        mWordsPresenter = new WordsPresenterV1(getContext(),this, New_Words);
+        IWordsPresenter wordsPresenter = new WordsPresenterV1(getContext(),this, New_Words);
 
         mLvNewWords = mRootView.findViewById(R.id.fragment_new_words_lv_new_words);
         tvNewWordsTips = mRootView.findViewById(R.id.fragment_new_words_tv_new_words_tips);
 
         //注册列表更新广播，以便接收更新列表请求
         String action = "load.new_words";
-        mBroadcast = new BWordsLoad(mWordsPresenter, action);
+        mBroadcast = new BWordsLoad(wordsPresenter, action);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mBroadcast, new IntentFilter(action));
 
         //发送广播，通知更新列表
@@ -76,17 +73,20 @@ public class FragmentNewWords extends Fragment implements IWordsView {
 
     @Override
     public void onWordsLoadComplete(List<Words> words) {
-        mWordsNumber = words.size();
+        int wordsNumber = words.size();
+        int position = mLvNewWords.getFirstVisiblePosition();//记录第一条显示记录位置
+
         mLvNewWords.setAdapter(new ListViewWordsAdapter(getContext(), words));
         mLvNewWords.setOnItemClickListener(new WordsListItemClickListener(getContext(), words));
 
-        if (mWordsNumber == 0) {
-            tvNewWordsTips.setText("没有新单词");
+        if (wordsNumber == 0) {
+            tvNewWordsTips.setText(R.string.tr_new_word_is_null);
             tvNewWordsTips.setVisibility(View.VISIBLE);
         }else{
             tvNewWordsTips.setVisibility(View.GONE);
         }
 
+        mLvNewWords.setSelection(position);//还原位置第一条显示的记录的位置
         System.gc();
     }
 

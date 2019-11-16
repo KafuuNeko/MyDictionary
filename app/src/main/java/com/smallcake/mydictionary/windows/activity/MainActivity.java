@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         (new WordsDataBase(MainActivity.this))
-                                .addWord(new Words(edWords.getText().toString(), edDescribe.getText().toString(), mNowPage!=0))
+                                .addWord(new Words(edWords.getText().toString(), edDescribe.getText().toString(), mNowPage==1))
                                 .close();
 
                         LocalBroadcastManager.getInstance(MainActivity.this).sendBroadcast(new Intent("load.all_words"));

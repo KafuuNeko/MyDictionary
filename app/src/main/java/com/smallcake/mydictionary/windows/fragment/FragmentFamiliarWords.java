@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +24,7 @@ import com.smallcake.mydictionary.struct.Words;
 
 import java.util.List;
 
+import static android.support.v4.content.LocalBroadcastManager.getInstance;
 import static com.smallcake.mydictionary.mvp.model.ReadWordsType.Familiar_Words;
 
 public class FragmentFamiliarWords extends Fragment implements IWordsView {
@@ -32,9 +32,6 @@ public class FragmentFamiliarWords extends Fragment implements IWordsView {
     private BWordsLoad mBroadcast;
     private ListView mLvFamiliarWords;
     private TextView tvFamiliarWordsTips;
-    private int mWordsNumber = 0;
-
-    private IWordsPresenter mWordsPresenter;
 
     @Nullable
     @Override
@@ -48,7 +45,7 @@ public class FragmentFamiliarWords extends Fragment implements IWordsView {
             mRootView = inflater.inflate(R.layout.fragment_familiar_words, null);
         }
 
-        mWordsPresenter = new WordsPresenterV1(getContext(),this, Familiar_Words);
+        IWordsPresenter wordsPresenter = new WordsPresenterV1(getContext(),this, Familiar_Words);
 
         //查找组件
         mLvFamiliarWords = mRootView.findViewById(R.id.fragment_familiar_words_lv_familiar_words);
@@ -56,11 +53,11 @@ public class FragmentFamiliarWords extends Fragment implements IWordsView {
 
         //注册列表更新广播，以便接收更新列表请求
         String action = "load.familiar_words";
-        mBroadcast = new BWordsLoad(mWordsPresenter,action);
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mBroadcast, new IntentFilter(action));
+        mBroadcast = new BWordsLoad(wordsPresenter,action);
+        getInstance(getContext()).registerReceiver(mBroadcast, new IntentFilter(action));
 
         //发送广播，通知更新列表
-        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(new Intent(action));
+        getInstance(getContext()).sendBroadcast(new Intent(action));
         return mRootView;
     }
 
@@ -68,7 +65,7 @@ public class FragmentFamiliarWords extends Fragment implements IWordsView {
     public void onDestroyView() {
         super.onDestroyView();
         mRootView = null;
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mBroadcast);
+        getInstance(getContext()).unregisterReceiver(mBroadcast);
     }
 
     @Override
@@ -78,16 +75,20 @@ public class FragmentFamiliarWords extends Fragment implements IWordsView {
 
     @Override
     public void onWordsLoadComplete(List<Words> words) {
-        mWordsNumber = words.size();
+        int wordsNumber = words.size();
+        int position = mLvFamiliarWords.getFirstVisiblePosition();//记录第一条显示记录位置
+
         mLvFamiliarWords.setAdapter(new ListViewWordsAdapter(getContext(), words));
         mLvFamiliarWords.setOnItemClickListener(new WordsListItemClickListener(getContext(), words));
 
-        if (mWordsNumber == 0) {
-            tvFamiliarWordsTips.setText("没有熟悉的单词");
+        if (wordsNumber == 0) {
+            tvFamiliarWordsTips.setText(R.string.tr_familiar_word_is_null);
             tvFamiliarWordsTips.setVisibility(View.VISIBLE);
         }else{
             tvFamiliarWordsTips.setVisibility(View.GONE);
         }
+
+        mLvFamiliarWords.setSelection(position);//还原位置第一条显示的记录的位置
 
         System.gc();
     }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +24,7 @@ import com.smallcake.mydictionary.mvp.presenter.WordsPresenterV1;
 
 import java.util.List;
 
+import static android.support.v4.content.LocalBroadcastManager.*;
 import static com.smallcake.mydictionary.mvp.model.ReadWordsType.ALL_WORDS;
 
 public class FragmentAllWords extends Fragment implements IWordsView {
@@ -32,8 +32,6 @@ public class FragmentAllWords extends Fragment implements IWordsView {
     private ListView mLvAllWords;
     private TextView tvAllWordsTips;
     private BWordsLoad mBroadcast;
-    private IWordsPresenter mWordsPresenter;
-    private int mWordsNumber = 0;
 
     @Nullable
     @Override
@@ -47,7 +45,7 @@ public class FragmentAllWords extends Fragment implements IWordsView {
             mRootView = inflater.inflate(R.layout.fragment_all_words, null);
         }
 
-        mWordsPresenter = new WordsPresenterV1(getContext(),this, ALL_WORDS);
+        IWordsPresenter wordsPresenter = new WordsPresenterV1(getContext(),this, ALL_WORDS);
 
         //查找组件
         mLvAllWords = mRootView.findViewById(R.id.fragment_all_words_lv_all_words);
@@ -55,11 +53,11 @@ public class FragmentAllWords extends Fragment implements IWordsView {
 
         //注册列表更新广播，以便接收更新列表请求
         String action = "load.all_words";
-        mBroadcast = new BWordsLoad(mWordsPresenter, action);
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mBroadcast, new IntentFilter(action));
+        mBroadcast = new BWordsLoad(wordsPresenter, action);
+        getInstance(getContext()).registerReceiver(mBroadcast, new IntentFilter(action));
 
         //发送广播，通知更新列表
-        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(new Intent(action));
+        getInstance(getContext()).sendBroadcast(new Intent(action));
 
         return mRootView;
 
@@ -68,7 +66,8 @@ public class FragmentAllWords extends Fragment implements IWordsView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mBroadcast);
+
+        getInstance(getContext()).unregisterReceiver(mBroadcast);
         mRootView = null;
     }
 
@@ -79,16 +78,20 @@ public class FragmentAllWords extends Fragment implements IWordsView {
 
     @Override
     public void onWordsLoadComplete(List<Words> words) {
-        mWordsNumber = words.size();
+        int wordsNumber = words.size();
+        int position = mLvAllWords.getFirstVisiblePosition();//记录第一条显示记录位置
+
         mLvAllWords.setAdapter(new ListViewWordsAdapter(getContext(), words));
         mLvAllWords.setOnItemClickListener(new WordsListItemClickListener(getContext(), words));
 
-        if (mWordsNumber == 0) {
-            tvAllWordsTips.setText("没有任何单词");
+        if (wordsNumber == 0) {
+            tvAllWordsTips.setText(R.string.tr_all_word_is_null);
             tvAllWordsTips.setVisibility(View.VISIBLE);
         }else{
             tvAllWordsTips.setVisibility(View.GONE);
         }
+
+        mLvAllWords.setSelection(position);//还原位置第一条显示的记录的位置
 
         System.gc();
     }

@@ -66,8 +66,7 @@ public class WordsListItemClickListener implements AdapterView.OnItemClickListen
         final Words words = mWords.get(position);
 
         String[] items = new String[]{
-                mContext.getString(R.string.tr_familiar_word),
-                mContext.getString(R.string.tr_new_word),
+                (words.familiar?mContext.getString(R.string.tr_new_word):mContext.getString(R.string.tr_familiar_word)),
                 mContext.getString(R.string.tr_edit),
                 mContext.getString(R.string.tr_delete),
                 mContext.getString(R.string.tr_cancel)};
@@ -80,30 +79,37 @@ public class WordsListItemClickListener implements AdapterView.OnItemClickListen
 
                 switch (which){
                     case 0:
-                        (new WordsDataBase(mContext)).setFamiliar(words,true).close();
+                        (new WordsDataBase(mContext)).setFamiliar(words,!words.familiar).close();
                         updateAllWordsList();
                         break;
 
                     case 1:
-                        (new WordsDataBase(mContext)).setFamiliar(words,false).close();
-                        updateAllWordsList();
-                        break;
-
-                    case 2:
                         dialogEditWords(words);
                         break;
 
-                    case 3:
-                        (new WordsDataBase(mContext)).deleteWord(words).close();
-                        updateAllWordsList();
+                    case 2:
+                        String msg = mContext.getString(R.string.tr_msg_tip_delete_word);
+                        msg = msg.replace("%name", words.words);
+
+                        (new AlertDialog.Builder(mContext))
+                            .setMessage(msg)
+                            .setPositiveButton(R.string.tr_delete, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    (new WordsDataBase(mContext)).deleteWord(words).close();
+                                    updateAllWordsList();
+                                }
+                            })
+                            .setNegativeButton(R.string.tr_cancel,null)
+                            .create().show();
+
                         break;
                 }
-
-
-
+                
             }
         });
 
+        builder.setTitle(words.words);
         builder.create().show();
 
     }
