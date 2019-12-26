@@ -96,9 +96,13 @@ public class MainActivity extends AppCompatActivity {
                         (new ServiceConfig(MainActivity.this)).setOpenStatus("push_new_word", true);
                         Toast.makeText(MainActivity.this, getResources().getText(R.string.tr_open_service), Toast.LENGTH_SHORT).show();
                         break;
-                    case  R.id.closePush:
+                    case R.id.closePush:
                         (new ServiceConfig(MainActivity.this)).setOpenStatus("push_new_word", false);
                         Toast.makeText(MainActivity.this, getResources().getText(R.string.tr_closed_service), Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.addWord:
+                        onAddNewWords();
                         break;
                 }
 
@@ -172,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onAddNewWords(View v){
+    private void onAddNewWords(){
         View DialogView = View.inflate(this, R.layout.dialog_edit_world, null);
 
         final EditText edWords = DialogView.findViewById(R.id.dialog_edit_world_edWords);

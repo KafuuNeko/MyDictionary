@@ -2,5 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/openPush" android:title="打开新词推送"></item>
     <item android:id="@+id/closePush" android:title="关闭新词推送"></item>
+    <item android:id="@+id/addWord" android:title="添加单词"></item>
 
 </menu>
