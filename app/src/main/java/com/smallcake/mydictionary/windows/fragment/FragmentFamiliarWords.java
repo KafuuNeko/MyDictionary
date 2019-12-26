@@ -66,6 +66,8 @@ public class FragmentFamiliarWords extends Fragment implements IWordsView {
         super.onDestroyView();
         mRootView = null;
         getInstance(getContext()).unregisterReceiver(mBroadcast);
+        Log.d("FragmentFamiliarWords","onDestroyView");
+
     }
 
     @Override

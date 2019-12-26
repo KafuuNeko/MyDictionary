@@ -16,4 +16,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <string-array name="arrayDrawerItem">
+        <item>导出数据库</item>
+        <item>导入数据库</item>
+    </string-array>
 </resources>

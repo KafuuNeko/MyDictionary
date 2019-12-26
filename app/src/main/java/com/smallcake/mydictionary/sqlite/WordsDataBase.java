@@ -1,6 +1,7 @@
 package com.smallcake.mydictionary.sqlite;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -75,6 +76,24 @@ public class WordsDataBase extends SQLiteOpenHelper {
         updateWord(words);
 
         return this;
+    }
+
+    public Words randomGet(boolean familiar) {
+        Words words = null;
+
+        Cursor cursor = getReadableDatabase().rawQuery(
+                "SELECT id,words,describe FROM basic_words "
+                        + "WHERE familiar = "+(familiar?1:0)
+                        + " ORDER BY (RANDOM() % (SELECT COUNT(*) FROM basic_words WHERE familiar=" + (familiar?1:0)+")) limit 1"
+                , null);
+
+        if (cursor.moveToNext())
+        {
+            words = new Words(cursor.getLong(0), cursor.getString(1), cursor.getString(2), familiar);
+        }
+        cursor.close();
+
+        return words;
     }
 
 }

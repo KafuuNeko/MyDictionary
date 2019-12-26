@@ -3,4 +3,9 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#3799E4</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorDrawer">#CCFF5722</color>
+    <color name="colorDrawerAbout">#03A9F4</color>
+    <color name="colorDrawerItem">#FFFFFF</color>
+
 </resources>
+

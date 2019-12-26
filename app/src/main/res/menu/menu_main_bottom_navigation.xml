@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navNewWords"
+        android:title="@string/tr_new_word"
+        android:icon="@drawable/ic_unfinished"/>
+
+    <item
+        android:id="@+id/navFamiliarWords"
+        android:title="@string/tr_familiar_word"
+        android:icon="@drawable/ic_complete"
+        />
+
+    <item
+        android:id="@+id/navAllWords"
+        android:title="@string/tr_all_word"
+        android:icon="@drawable/ic_database"
+        />
+
+</menu>

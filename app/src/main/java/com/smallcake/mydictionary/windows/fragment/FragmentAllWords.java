@@ -69,6 +69,8 @@ public class FragmentAllWords extends Fragment implements IWordsView {
 
         getInstance(getContext()).unregisterReceiver(mBroadcast);
         mRootView = null;
+
+        Log.d("FragmentAllWords","onDestroyView");
     }
 
     @Override

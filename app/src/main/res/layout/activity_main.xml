@@ -1,153 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mDrawer"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".windows.activity.MainActivity">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/mToolsBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimaryDark"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/tr_new_word"
+        app:titleTextColor="#FFFFFF">
 
-        <TextView
-            android:id="@+id/mTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onAboutSoftware"
-            android:text="@string/main_menu_new_words"
-            android:textAllCaps="false"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.v7.widget.Toolbar>
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="@string/description"
-            android:onClick="onAddNewWords"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            app:srcCompat="@drawable/ico_add1" />
-    </android.support.constraint.ConstraintLayout>
-
-    <FrameLayout
-        android:id="@+id/mFrame"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mViewPage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/mMenu"
+        app:layout_constraintBottom_toTopOf="@id/mBottomMenu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/mToolsBar">
 
-    </FrameLayout>
+    </android.support.v4.view.ViewPager>
 
-    <LinearLayout
-        android:id="@+id/mMenu"
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/mBottomMenu"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_gravity="bottom"
+        app:itemTextColor="@color/color_main_nav"
+        app:itemIconTint="@color/color_main_nav"
+        app:menu="@menu/menu_main_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:onClick="onMenuButtonNewWords"
-            android:orientation="vertical">
+    </android.support.design.widget.BottomNavigationView>
 
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/description"
-                android:onClick="onMenuButtonNewWords"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_unfinished" />
 
-            <TextView
-                android:id="@+id/mTvMenuNewWords"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="@string/main_menu_new_words" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:onClick="onMenuButtonMediumTerm"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/description"
-                android:scaleType="centerInside"
-                android:onClick="onMenuButtonMediumTerm"
-                android:src="@drawable/ic_complete" />
-
-            <TextView
-                android:id="@+id/mTvMenuFamiliarWords"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/main_menu_familiar_words" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:onClick="onMenuButtonAll"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/description"
-                android:scaleType="centerInside"
-                android:onClick="onMenuButtonAll"
-                android:src="@drawable/ic_database" />
-
-            <TextView
-                android:id="@+id/mTvMenuAllWords"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/main_menu_all" />
-        </LinearLayout>
-    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/mDrawerNav"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/colorDrawer"
+        app:headerLayout="@layout/main_nav_header"
+        app:menu="@menu/menu_nav_drawer"
+        app:itemTextColor="@color/colorDrawerItem">
+    </android.support.design.widget.NavigationView>
+
+
+</android.support.v4.widget.DrawerLayout>

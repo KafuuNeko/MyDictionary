@@ -7,90 +7,158 @@
 package com.smallcake.mydictionary.windows.activity;
 
 import com.smallcake.mydictionary.R;
+import com.smallcake.mydictionary.adapter.MainViewPageAdapter;
+import com.smallcake.mydictionary.io.ServiceConfig;
+import com.smallcake.mydictionary.service.SPushWord;
 import com.smallcake.mydictionary.sqlite.WordsDataBase;
 import com.smallcake.mydictionary.struct.Words;
 import com.smallcake.mydictionary.windows.fragment.*;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
     private List<Fragment> mPage = new ArrayList<>();
 
-    private List<TextView> mTvMenu = new ArrayList<>();
+    private DrawerLayout mDrawer;
+    private NavigationView mDrawerNav;
 
-    private TextView mTitle;
+    private Toolbar mToolbar;
 
-    private int mNowPage;
+    private ViewPager mViewPage;
+    private PagerAdapter mPagerAdapter;
+
+    private BottomNavigationView mBottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTitle = findViewById(R.id.mTitle);
+        //开启单词推送服务
+        if (Build.VERSION.SDK_INT >= 26) {
+            this.startForegroundService(new Intent(this, SPushWord.class));
+        }
+        else
+        {
+            this.startService(new Intent(this, SPushWord.class));
+        }
 
-        //加载底部导航标签
-        mTvMenu.add((TextView) findViewById(R.id.mTvMenuNewWords));
-        mTvMenu.add((TextView) findViewById(R.id.mTvMenuFamiliarWords));
-        mTvMenu.add((TextView) findViewById(R.id.mTvMenuAllWords));
+        //设置默认Fragment
+        initView();
+
+    }
+
+
+    private void initView() {
+        mDrawer = findViewById(R.id.mDrawer);
+        mDrawerNav = findViewById(R.id.mDrawerNav);
+
+        mDrawerNav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId())
+                {
+                    case R.id.openPush:
+                        (new ServiceConfig(MainActivity.this)).setOpenStatus("push_new_word", true);
+                        Toast.makeText(MainActivity.this, getResources().getText(R.string.tr_open_service), Toast.LENGTH_SHORT).show();
+                        break;
+                    case  R.id.closePush:
+                        (new ServiceConfig(MainActivity.this)).setOpenStatus("push_new_word", false);
+                        Toast.makeText(MainActivity.this, getResources().getText(R.string.tr_closed_service), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+
+                mDrawer.closeDrawers();
+                return false;
+            }
+        });
+
+        //标题栏
+        mToolbar = findViewById(R.id.mToolsBar);
+        setSupportActionBar(mToolbar);
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, mDrawer, mToolbar, R.string.tr_open_drawer, R.string.tr_close_drawer);
+        actionBarDrawerToggle.syncState();
+        mDrawer.addDrawerListener(actionBarDrawerToggle);
+
+        //底部导航栏
+        mBottomNavigation = findViewById(R.id.mBottomMenu);
+
+        mBottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId())
+                {
+                    case R.id.navNewWords:
+                        UpdateActionBarTitle(0);
+                        mViewPage.setCurrentItem(0);
+                        break;
+                    case R.id.navFamiliarWords:
+                        UpdateActionBarTitle(1);
+                        mViewPage.setCurrentItem(1);
+                        break;
+                    case R.id.navAllWords:
+                        UpdateActionBarTitle(2);
+                        mViewPage.setCurrentItem(2);
+                        break;
+                }
+
+                return false;
+            }
+        });
 
         //加载所有Fragment Fragment的数量应与底部导航标签相等
         mPage.add(new FragmentNewWords());
         mPage.add(new FragmentFamiliarWords());
         mPage.add(new FragmentAllWords());
 
-        //设置默认Fragment
-        setNowPage(0);
-    }
+        mViewPage = findViewById(R.id.mViewPage);
+        mPagerAdapter = new MainViewPageAdapter(getSupportFragmentManager(), mPage);
+        mViewPage.setAdapter(mPagerAdapter);
+        mViewPage.setCurrentItem(0);
 
-    /*
-    * 设置当前显示的Fragment
-    * */
-    private void setNowPage(int index){
-        mNowPage = index;
-        //获得Fragment管理器与开启事务
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        /*
-        * 此迭代进行的操作
-        * 判断所有的Fragment是否已添加，未添加则进行添加操作
-        * 隐藏所有Fragment
-        * 将所有底部导航标签文本颜色设置为黑色
-        * */
-        for (int i = 0; i < mPage.size(); i++){
-            Fragment fragment = mPage.get(i);
-            if(!fragment.isAdded()){
-                fragmentTransaction.add(R.id.mFrame, fragment);
+        mViewPage.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
             }
-            fragmentTransaction.hide(fragment);
 
-            mTvMenu.get(i).setTextColor(Color.argb(255,0,0,0));
+            @Override
+            public void onPageSelected(int i) {
+                mBottomNavigation.getMenu().getItem(i).setChecked(true);
+                UpdateActionBarTitle(i);
+            }
 
-        }
+            @Override
+            public void onPageScrollStateChanged(int i) {
 
-        //设置选中的底部导航文本颜色为红色
-        mTvMenu.get(index).setTextColor(Color.argb(255,255,0,0));
-        //显示指定的Fragment
-        fragmentTransaction.show(mPage.get(index));
-
-        fragmentTransaction.commit();
+            }
+        });
 
     }
 
@@ -108,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         (new WordsDataBase(MainActivity.this))
-                                .addWord(new Words(edWords.getText().toString(), edDescribe.getText().toString(), mNowPage==1))
+                                .addWord(new Words(edWords.getText().toString(), edDescribe.getText().toString(), mBottomNavigation.getSelectedItemId() == R.id.navFamiliarWords))
                                 .close();
 
                         LocalBroadcastManager.getInstance(MainActivity.this).sendBroadcast(new Intent("load.all_words"));
@@ -124,41 +192,19 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    /*
-     * 关于软件
-     * onAboutSoftware
-     * */
-    public void onAboutSoftware(View v){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.text_about);
-        builder.create().show();
+    private void UpdateActionBarTitle(int index) {
+        switch (index)
+        {
+            case 0:
+                getSupportActionBar().setTitle(R.string.main_menu_new_words);
+                break;
+            case 1:
+                getSupportActionBar().setTitle(R.string.main_menu_familiar_words);
+                break;
+            case 2:
+                getSupportActionBar().setTitle(R.string.main_menu_all);
+                break;
+        }
     }
 
-    /*
-    * 底部导航点击事件
-    * onMenuButtonNewWords
-    * */
-    public void onMenuButtonNewWords(View v){
-        mTitle.setText(R.string.main_menu_new_words);
-        setNowPage(0);
-
-    }
-
-    /*
-     * 底部导航点击事件
-     * onMenuButtonMediumTerm
-     * */
-    public void onMenuButtonMediumTerm(View v){
-        mTitle.setText(R.string.main_menu_familiar_words);
-        setNowPage(1);
-    }
-
-    /*
-     * 底部导航点击事件
-     * onMenuButtonAll
-     * */
-    public void onMenuButtonAll(View v){
-        mTitle.setText(R.string.main_menu_all);
-        setNowPage(2);
-    }
 }

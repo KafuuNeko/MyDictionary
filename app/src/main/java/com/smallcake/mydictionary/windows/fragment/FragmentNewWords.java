@@ -44,6 +44,8 @@ public class FragmentNewWords extends Fragment implements IWordsView {
             mRootView = inflater.inflate(R.layout.fragment_new_words, null);
         }
 
+
+
         IWordsPresenter wordsPresenter = new WordsPresenterV1(getContext(),this, New_Words);
 
         mLvNewWords = mRootView.findViewById(R.id.fragment_new_words_lv_new_words);
@@ -64,6 +66,7 @@ public class FragmentNewWords extends Fragment implements IWordsView {
         super.onDestroyView();
         mRootView = null;
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mBroadcast);
+        Log.d("FragmentNewWords","onDestroyView");
     }
 
     @Override
