@@ -127,11 +127,19 @@ public class SPushWord extends Service {
         if (mPushTimer == null)
         {
             mPushTimer = new Timer();
+            //一分钟检测一次
+            mPushTimer.schedule(mPushRunnable, 1000, 60000);
         }
-
-        //一分钟检测一次
-        mPushTimer.schedule(mPushRunnable, 1000, 60000);
 
     }
 
+    @Override
+    public void onDestroy() {
+        if (mPushTimer != null)
+        {
+            mPushTimer.cancel();
+            mPushTimer = null;
+        }
+        super.onDestroy();
+    }
 }

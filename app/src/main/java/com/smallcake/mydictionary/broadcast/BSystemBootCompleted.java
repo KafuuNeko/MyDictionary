@@ -24,6 +24,5 @@ public class BSystemBootCompleted extends BroadcastReceiver {
             context.startService(new Intent(context, SPushWord.class));
         }
 
-        (new ServiceConfig(context)).setOpenStatus("MainActivityOpenService", false);
     }
 }

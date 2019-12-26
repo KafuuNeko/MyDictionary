@@ -4,8 +4,8 @@
     <string name="main_menu_new_words">新词</string>
     <string name="main_menu_familiar_words">熟词</string>
     <string name="main_menu_all">词典</string>
-    <string name="tr_open_drawer"></string>
-    <string name="tr_close_drawer"></string>
+    <string name="tr_open_drawer">开启</string>
+    <string name="tr_close_drawer">关闭</string>
     <string name="tr_word">单词</string>
     <string name="tr_describe">描述</string>
     <string name="tr_new_word">新词</string>
@@ -16,7 +16,7 @@
     <string name="tr_add">添加</string>
     <string name="tr_cancel">取消</string>
     <string name="tr_modify">修改</string>
-    <string name="text_about">Version:1.4\nAuthor:短毛猫\nE-mail:66492422@qq.com</string>
+    <string name="text_about">Version:1.5\nAuthor:短毛猫\nE-mail:66492422@qq.com</string>
     <string name="tr_msg_tip_delete_word">是否立即删除\'%name\'?</string>
     <string name="tr_familiar_word_is_null">没有熟悉的单词</string>
     <string name="tr_new_word_is_null">没有新单词</string>

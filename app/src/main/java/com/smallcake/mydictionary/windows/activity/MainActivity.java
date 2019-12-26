@@ -60,28 +60,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        firstOpenService(MainActivity.this);
+        initService();
         //设置默认Fragment
         initView();
 
     }
 
-    private static void firstOpenService(Context context) {
-        if(!(new ServiceConfig(context)).isClose("MainActivityOpenService"))
+    private void initService() {
+        //开启单词推送服务
+        if (Build.VERSION.SDK_INT >= 26) {
+            startForegroundService(new Intent(this, SPushWord.class));
+        }
+        else
         {
-            //开启单词推送服务
-            if (Build.VERSION.SDK_INT >= 26) {
-                context.startForegroundService(new Intent(context, SPushWord.class));
-            }
-            else
-            {
-                context.startService(new Intent(context, SPushWord.class));
-            }
-            (new ServiceConfig(context)).setOpenStatus("MainActivityOpenService", false);
-            Log.d("Service", "第一次运行软件，启动服务");
+            startService(new Intent(this, SPushWord.class));
         }
     }
-
 
     private void initView() {
         mDrawer = findViewById(R.id.mDrawer);
