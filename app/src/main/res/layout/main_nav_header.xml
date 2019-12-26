@@ -21,6 +21,8 @@
         android:layout_margin="5dp"
         android:scrollbarSize="0dp"
         android:text="@string/text_about"
+        android:autoLink="email|web"
+        android:textColorLink="#121DFF"
         android:textColor="@color/colorDrawerAbout"
         android:textSize="10sp"></TextView>
 

@@ -16,7 +16,7 @@
     <string name="tr_add">添加</string>
     <string name="tr_cancel">取消</string>
     <string name="tr_modify">修改</string>
-    <string name="text_about">Version:1.5\nAuthor:短毛猫\nE-mail:66492422@qq.com</string>
+    <string name="text_about">Version:1.5\nAuthor:短毛猫\nE-mail:66492422@qq.com\nOpenSourceCode:\nhttps://github.com/66492422/MyDictionary</string>
     <string name="tr_msg_tip_delete_word">是否立即删除\'%name\'?</string>
     <string name="tr_familiar_word_is_null">没有熟悉的单词</string>
     <string name="tr_new_word_is_null">没有新单词</string>
