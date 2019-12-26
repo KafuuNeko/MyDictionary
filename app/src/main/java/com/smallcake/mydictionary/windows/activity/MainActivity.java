@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         mPage.add(new FragmentAllWords());
 
         mViewPage = findViewById(R.id.mViewPage);
+        mViewPage.setOffscreenPageLimit(mPage.size());
         mPagerAdapter = new MainViewPageAdapter(getSupportFragmentManager(), mPage);
         mViewPage.setAdapter(mPagerAdapter);
         mViewPage.setCurrentItem(0);
