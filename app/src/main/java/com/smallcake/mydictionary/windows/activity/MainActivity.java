@@ -14,6 +14,7 @@ import com.smallcake.mydictionary.sqlite.WordsDataBase;
 import com.smallcake.mydictionary.struct.Words;
 import com.smallcake.mydictionary.windows.fragment.*;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -30,6 +31,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -58,18 +60,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //开启单词推送服务
-        if (Build.VERSION.SDK_INT >= 26) {
-            this.startForegroundService(new Intent(this, SPushWord.class));
-        }
-        else
-        {
-            this.startService(new Intent(this, SPushWord.class));
-        }
-
+        firstOpenService(MainActivity.this);
         //设置默认Fragment
         initView();
 
+    }
+
+    private static void firstOpenService(Context context) {
+        if(!(new ServiceConfig(context)).isClose("MainActivityOpenService"))
+        {
+            //开启单词推送服务
+            if (Build.VERSION.SDK_INT >= 26) {
+                context.startForegroundService(new Intent(context, SPushWord.class));
+            }
+            else
+            {
+                context.startService(new Intent(context, SPushWord.class));
+            }
+            (new ServiceConfig(context)).setOpenStatus("MainActivityOpenService", false);
+            Log.d("Service", "第一次运行软件，启动服务");
+        }
     }
 
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import com.smallcake.mydictionary.io.ServiceConfig;
 import com.smallcake.mydictionary.service.SPushWord;
 
 public class BSystemBootCompleted extends BroadcastReceiver {
@@ -22,5 +23,7 @@ public class BSystemBootCompleted extends BroadcastReceiver {
         {
             context.startService(new Intent(context, SPushWord.class));
         }
+
+        (new ServiceConfig(context)).setOpenStatus("MainActivityOpenService", false);
     }
 }
