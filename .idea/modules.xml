@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MyDictionary.iml" filepath="$PROJECT_DIR$/.idea/modules/MyDictionary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MyDictionary.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MyDictionary.app.iml" />
+    </modules>
+  </component>
+</project>
